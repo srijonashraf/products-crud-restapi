@@ -9,33 +9,48 @@
       <input type="hidden" id="productId" value="<%= productId %>">
 
       <div class="mb-3">
-        <label for="productName" class="form-label">Product Name</label>
-        <input type="text" class="form-control" id="productName" name="ProductName" required>
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
       </div>
 
       <div class="mb-3">
-        <label for="productCode" class="form-label">Product Code</label>
-        <input type="text" class="form-control" id="productCode" name="ProductCode" required>
+        <label for="brand" class="form-label">Brand</label>
+        <input type="text" class="form-control" id="brand" name="brand" required>
       </div>
 
       <div class="mb-3">
-        <label for="imageUrl" class="form-label">Image URL</label>
-        <input type="url" class="form-control" id="imageUrl" name="Img" required>
+        <label for="category" class="form-label">Category</label>
+        <input type="text" class="form-control" id="category" name="category" required>
       </div>
 
       <div class="mb-3">
-        <label for="unitPrice" class="form-label">Unit Price</label>
-        <input type="number" class="form-control" id="unitPrice" name="UnitPrice" step="0.01" min="0" required>
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
       </div>
 
       <div class="mb-3">
-        <label for="quantity" class="form-label">Quantity</label>
-        <input type="number" class="form-control" id="quantity" name="Qty" min="0" required>
+        <label for="images" class="form-label">Image URL</label>
+        <input type="url" class="form-control" id="images" name="images" required>
       </div>
 
       <div class="mb-3">
-        <label for="totalPrice" class="form-label">Total Price</label>
-        <input type="number" class="form-control" id="totalPrice" name="TotalPrice" step="0.01" min="0" required>
+        <label for="price" class="form-label">Price</label>
+        <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="discountPercentage" class="form-label">Discount Percentage</label>
+        <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" step="0.01" min="0" max="100">
+      </div>
+
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input type="number" class="form-control" id="rating" name="rating" step="0.1" min="0" max="5">
       </div>
 
       <button type="submit" class="btn btn-primary">Update Product</button>
@@ -48,22 +63,9 @@
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('edit-product-form');
     const productId = document.getElementById('productId').value;
-    const unitPriceInput = document.getElementById('unitPrice');
-    const quantityInput = document.getElementById('quantity');
-    const totalPriceInput = document.getElementById('totalPrice');
 
     // Fetch product data
     fetchProduct(productId);
-
-    // Calculate total price when unit price or quantity changes
-    function calculateTotal() {
-      const unitPrice = parseFloat(unitPriceInput.value) || 0;
-      const quantity = parseInt(quantityInput.value) || 0;
-      totalPriceInput.value = (unitPrice * quantity).toFixed(2);
-    }
-
-    unitPriceInput.addEventListener('input', calculateTotal);
-    quantityInput.addEventListener('input', calculateTotal);
 
     // Function to fetch product data
     async function fetchProduct(id) {
@@ -78,12 +80,15 @@
 
     // Function to populate form with product data
     function populateForm(product) {
-      document.getElementById('productName').value = product.ProductName;
-      document.getElementById('productCode').value = product.ProductCode;
-      document.getElementById('imageUrl').value = product.Img;
-      document.getElementById('unitPrice').value = product.UnitPrice;
-      document.getElementById('quantity').value = product.Qty;
-      document.getElementById('totalPrice').value = product.TotalPrice;
+      document.getElementById('title').value = product.title;
+      document.getElementById('brand').value = product.brand;
+      document.getElementById('category').value = product.category;
+      document.getElementById('description').value = product.description;
+      document.getElementById('images').value = product.images;
+      document.getElementById('price').value = product.price;
+      document.getElementById('discountPercentage').value = product.discountPercentage;
+      document.getElementById('stock').value = product.stock;
+      document.getElementById('rating').value = product.rating;
     }
 
     // Handle form submission
@@ -97,10 +102,8 @@
       // Convert FormData to object
       formData.forEach((value, key) => {
         // Convert numeric values
-        if (key === 'UnitPrice' || key === 'TotalPrice') {
+        if (['price', 'discountPercentage', 'rating', 'stock'].includes(key)) {
           productData[key] = parseFloat(value);
-        } else if (key === 'Qty') {
-          productData[key] = parseInt(value);
         } else {
           productData[key] = value;
         }
@@ -115,9 +118,8 @@
         showMessage(result.message, 'danger');
       }
     });
-
-    // Using showMessage function from main.js
   });
 </script>
 
 <%- include('partials/footer') %>
+

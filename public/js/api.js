@@ -27,7 +27,7 @@ function handleApiError(error, errorMessage) {
 // Function to fetch all products
 async function fetchProducts() {
   try {
-    const response = await axios.get(`${getBaseUrl()}/api/v1/ReadProduct`);
+    const response = await axios.get(`${getBaseUrl()}/api/v1/product`);
     
     if (response.data.status === 'success') {
       return { success: true, data: response.data.data };
@@ -43,7 +43,7 @@ async function fetchProducts() {
 // Function to fetch a product by ID
 async function fetchProductById(id) {
   try {
-    const response = await axios.get(`${getBaseUrl()}/api/v1/ReadProductByID/${id}`);
+    const response = await axios.get(`${getBaseUrl()}/api/v1/product/${id}`);
     
     if (response.data.status === 'success' && response.data.data.length > 0) {
       return { success: true, data: response.data.data[0] };
@@ -59,7 +59,7 @@ async function fetchProductById(id) {
 // Function to create a product
 async function createProduct(productData) {
   try {
-    const response = await axios.post(`${getBaseUrl()}/api/v1/CreateProduct`, productData);
+    const response = await axios.post(`${getBaseUrl()}/api/v1/product`, productData);
     
     if (response.data.status === 'success') {
       return { success: true, data: response.data.data };
@@ -75,7 +75,7 @@ async function createProduct(productData) {
 // Function to update a product
 async function updateProduct(id, productData) {
   try {
-    const response = await axios.post(`${getBaseUrl()}/api/v1/UpdateProduct/${id}`, productData);
+    const response = await axios.put(`${getBaseUrl()}/api/v1/product/${id}`, productData);
     
     if (response.data.status === 'success') {
       return { success: true, data: response.data.data };
@@ -91,7 +91,7 @@ async function updateProduct(id, productData) {
 // Function to delete a product
 async function deleteProduct(id) {
   try {
-    const response = await axios.get(`${getBaseUrl()}/api/v1/DeleteProduct/${id}`);
+    const response = await axios.delete(`${getBaseUrl()}/api/v1/product/${id}`);
     
     if (response.data.status === 'success') {
       return { success: true, message: 'Product deleted successfully' };

@@ -2,13 +2,15 @@ const mongoose = require("mongoose");
 
 const DataSchema = mongoose.Schema(
   {
-    ProductName: { type: String, required: true },
-    ProductCode: { type: String, unique: true, required: true },
-    Img: { type: String, required: true },
-    UnitPrice: { type: Number, required: true },
-    Qty: { type: Number, required: true, default: 0 },
-    TotalPrice: { type: Number, required: true },
-    CreatedDate: { type: Date, default: Date.now() },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    category: { type: String, required: true },
+    price: { type: Number, required: true },
+    discountPercentage: { type: Number, default: 0 },
+    rating: { type: Number, default: 0 },
+    stock: { type: Number, required: true, default: 0 },
+    brand: { type: String, required: true },
+    images: { type: String, required: true }
   },
   {
     versionKey: false,
@@ -16,5 +18,5 @@ const DataSchema = mongoose.Schema(
   }
 );
 
-const ProductsModel = mongoose.model("products", DataSchema); //Here products is database's collection name
+const ProductsModel = mongoose.model("products", DataSchema);
 module.exports = ProductsModel;

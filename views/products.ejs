@@ -9,19 +9,21 @@
   <table class="table table-striped table-bordered">
     <thead class="table-dark">
       <tr>
-        <th>Product Name</th>
-        <th>Product Code</th>
+        <th>Title</th>
+        <th>Brand</th>
+        <th>Category</th>
         <th>Image</th>
-        <th>Unit Price</th>
-        <th>Quantity</th>
-        <th>Total Price</th>
+        <th>Price</th>
+        <th>Discount</th>
+        <th>Stock</th>
+        <th>Rating</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody id="products-table-body">
       <!-- Products will be loaded here via JavaScript -->
       <tr>
-        <td colspan="7" class="text-center">Loading products...</td>
+        <td colspan="9" class="text-center">Loading products...</td>
       </tr>
     </tbody>
   </table>
@@ -48,7 +50,7 @@
       const tableBody = document.getElementById('products-table-body');
 
       if (products.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No products found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="9" class="text-center">No products found</td></tr>';
         return;
       }
 
@@ -56,12 +58,14 @@
       products.forEach(function(product) {
         html += `
           <tr>
-            <td>${product.ProductName}</td>
-            <td>${product.ProductCode}</td>
-            <td><img src="${product.Img}" alt="${product.ProductName}" width="50"></td>
-            <td>$${product.UnitPrice.toFixed(2)}</td>
-            <td>${product.Qty}</td>
-            <td>$${product.TotalPrice.toFixed(2)}</td>
+            <td>${product.title}</td>
+            <td>${product.brand}</td>
+            <td>${product.category}</td>
+            <td><img src="${product.images}" alt="${product.title}" width="50"></td>
+            <td>$${product.price.toFixed(2)}</td>
+            <td>${product.discountPercentage}%</td>
+            <td>${product.stock}</td>
+            <td>${product.rating.toFixed(1)}</td>
             <td>
               <a href="/products/edit/${product._id}" class="btn btn-sm btn-warning">Edit</a>
               <button class="btn btn-sm btn-danger" onclick="deleteProductItem('${product._id}')">Delete</button>
@@ -72,8 +76,6 @@
 
       tableBody.innerHTML = html;
     }
-
-    // Using showMessage function from main.js
 
     // Function to delete a product
     window.deleteProductItem = async function(id) {
@@ -92,3 +94,4 @@
 </script>
 
 <%- include('partials/footer') %>
+
