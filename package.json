@@ -1,0 +1,30 @@
+{
+  "name": "products-crud-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo for Products CRUD Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Srijon Ashraf",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.10",
+    "express": "^4.17.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.2.1",
+    "helmet": "^5.0.2",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.12.0",
+    "nodemon": "^2.0.15",
+    "xss-clean": "^0.1.1"
+  }
+}

@@ -1,0 +1,97 @@
+<%- include('partials/header') %>
+
+<h1>Add New Product</h1>
+<div class="alert alert-info d-none" id="message-box"></div>
+
+<div class="card">
+  <div class="card-body">
+    <form id="create-product-form">
+      <div class="mb-3">
+        <label for="productName" class="form-label">Product Name</label>
+        <input type="text" class="form-control" id="productName" name="ProductName" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="productCode" class="form-label">Product Code</label>
+        <input type="text" class="form-control" id="productCode" name="ProductCode" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="imageUrl" class="form-label">Image URL</label>
+        <input type="url" class="form-control" id="imageUrl" name="Img" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="unitPrice" class="form-label">Unit Price</label>
+        <input type="number" class="form-control" id="unitPrice" name="UnitPrice" step="0.01" min="0" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="quantity" class="form-label">Quantity</label>
+        <input type="number" class="form-control" id="quantity" name="Qty" min="0" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="totalPrice" class="form-label">Total Price</label>
+        <input type="number" class="form-control" id="totalPrice" name="TotalPrice" step="0.01" min="0" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create Product</button>
+      <a href="/products" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('create-product-form');
+    const unitPriceInput = document.getElementById('unitPrice');
+    const quantityInput = document.getElementById('quantity');
+    const totalPriceInput = document.getElementById('totalPrice');
+
+    // Calculate total price when unit price or quantity changes
+    function calculateTotal() {
+      const unitPrice = parseFloat(unitPriceInput.value) || 0;
+      const quantity = parseInt(quantityInput.value) || 0;
+      totalPriceInput.value = (unitPrice * quantity).toFixed(2);
+    }
+
+    unitPriceInput.addEventListener('input', calculateTotal);
+    quantityInput.addEventListener('input', calculateTotal);
+
+    // Handle form submission
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Get form data
+      const formData = new FormData(form);
+      const productData = {};
+
+      // Convert FormData to object
+      formData.forEach((value, key) => {
+        // Convert numeric values
+        if (key === 'UnitPrice' || key === 'TotalPrice') {
+          productData[key] = parseFloat(value);
+        } else if (key === 'Qty') {
+          productData[key] = parseInt(value);
+        } else {
+          productData[key] = value;
+        }
+      });
+
+      // Send data to API using the API helper
+      const result = await createProduct(productData);
+
+      if (result.success) {
+        showMessage('Product created successfully', 'success');
+        form.reset();
+      } else {
+        showMessage(result.message, 'danger');
+      }
+    });
+
+    // Using showMessage function from main.js
+  });
+</script>
+
+<%- include('partials/footer') %>

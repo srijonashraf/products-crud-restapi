@@ -1,0 +1,94 @@
+<%- include('partials/header') %>
+
+<h1>Products List</h1>
+<a href="/products/new" class="btn btn-primary mb-3">Add New Product</a>
+
+<div class="alert alert-info d-none" id="message-box"></div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Product Name</th>
+        <th>Product Code</th>
+        <th>Image</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="products-table-body">
+      <!-- Products will be loaded here via JavaScript -->
+      <tr>
+        <td colspan="7" class="text-center">Loading products...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Fetch products from API
+    loadProducts();
+
+    // Function to load products using the API helper
+    async function loadProducts() {
+      const result = await fetchProducts();
+
+      if (result.success) {
+        displayProducts(result.data);
+      } else {
+        showMessage(result.message, 'danger');
+      }
+    }
+
+    // Function to display products in the table
+    function displayProducts(products) {
+      const tableBody = document.getElementById('products-table-body');
+
+      if (products.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No products found</td></tr>';
+        return;
+      }
+
+      let html = '';
+      products.forEach(function(product) {
+        html += `
+          <tr>
+            <td>${product.ProductName}</td>
+            <td>${product.ProductCode}</td>
+            <td><img src="${product.Img}" alt="${product.ProductName}" width="50"></td>
+            <td>$${product.UnitPrice.toFixed(2)}</td>
+            <td>${product.Qty}</td>
+            <td>$${product.TotalPrice.toFixed(2)}</td>
+            <td>
+              <a href="/products/edit/${product._id}" class="btn btn-sm btn-warning">Edit</a>
+              <button class="btn btn-sm btn-danger" onclick="deleteProductItem('${product._id}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tableBody.innerHTML = html;
+    }
+
+    // Using showMessage function from main.js
+
+    // Function to delete a product
+    window.deleteProductItem = async function(id) {
+      if (confirm('Are you sure you want to delete this product?')) {
+        const result = await deleteProduct(id);
+
+        if (result.success) {
+          showMessage('Product deleted successfully', 'success');
+          loadProducts(); // Refresh the list
+        } else {
+          showMessage(result.message, 'danger');
+        }
+      }
+    }
+  });
+</script>
+
+<%- include('partials/footer') %>
