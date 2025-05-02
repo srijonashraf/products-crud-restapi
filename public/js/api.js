@@ -27,7 +27,7 @@ function handleApiError(error, errorMessage) {
 // Function to fetch all products
 async function fetchProducts() {
   try {
-    const response = await axios.get(`${getBaseUrl()}/api/v1/product`);
+    const response = await axios.get(`${getBaseUrl()}/api/v1/products`);
     
     if (response.data.status === 'success') {
       return { success: true, data: response.data.data };
@@ -103,3 +103,22 @@ async function deleteProduct(id) {
     return { success: false, message: errorMessage };
   }
 }
+
+// Function to search products by title
+async function searchProducts(title) {
+  try {
+    const response = await axios.get(`${getBaseUrl()}/api/v1/products/search`, {
+      params: { title }
+    });
+    
+    if (response.data.status === 'success') {
+      return { success: true, data: response.data.data };
+    } else {
+      return { success: false, message: 'Failed to search products' };
+    }
+  } catch (error) {
+    const errorMessage = handleApiError(error, 'Error searching products');
+    return { success: false, message: errorMessage };
+  }
+}
+

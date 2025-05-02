@@ -58,3 +58,21 @@ exports.DeleteProduct = async (req, res) => {
     res.status(400).json({ status: "fail", data: err });
   }
 };
+
+// Search Products by Title
+exports.SearchProductsByTitle = async (req, res) => {
+  try {
+    let searchTerm = req.query.title || '';
+    
+    // Create a case-insensitive regex pattern for the search term
+    const searchRegex = new RegExp(searchTerm, 'i');
+    
+    // Find products where title matches the regex pattern
+    const data = await ProductsModel.find({ title: searchRegex });
+    
+    res.status(200).json({ status: "success", data: data });
+  } catch (err) {
+    console.error("Error in SearchProductsByTitle:", err);
+    res.status(400).json({ status: "fail", data: err });
+  }
+};
