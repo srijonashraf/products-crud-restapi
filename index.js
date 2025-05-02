@@ -1,5 +1,8 @@
-// This is the main entry point for the application
-// It starts the server that handles both API and views
+const app = require("./app");
 
-// Import and start the app
-require("./app");
+// Backend server port
+const PORT = process.env.PORT;
+
+app.listen(PORT, () => {
+  console.log(`Backend API server running on http://localhost:${PORT}`);
+});

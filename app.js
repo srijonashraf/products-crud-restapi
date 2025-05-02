@@ -24,12 +24,14 @@ mongoose.set("strictQuery", true);
 
 // Security Middleware Implement
 // Configure CORS to allow requests from any origin
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 // Helmet Security Middleware
 if (process.env.NODE_ENV === "production") {
@@ -55,7 +57,6 @@ if (process.env.NODE_ENV === "production") {
     })
   );
 }
-
 
 app.use(mongoSanitize());
 app.use(xss());
@@ -110,13 +111,6 @@ app.get("/products/edit/:id", (req, res) => {
     title: "Edit Product",
     productId: req.params.id,
   });
-});
-
-// Backend server port
-const PORT = process.env.PORT;
-
-app.listen(PORT, () => {
-  console.log(`Backend API server running on http://localhost:${PORT}`);
 });
 
 module.exports = app;
